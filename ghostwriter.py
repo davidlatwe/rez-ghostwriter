@@ -7,7 +7,7 @@ from rez.serialise import process_python_objects
 from rez.serialise import FileFormat
 
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "DeveloperRepository",
