@@ -8,7 +8,7 @@ Just copy the `ghostwriter.py` into your test module.
 ### Example
 
 ```python
-from ghostwriter import DeveloperRepository, early, late
+from ghostwriter import DeveloperRepository, early, late, include
 
 dev_repo = DeveloperRepository("test/dev")
 dev_repo.debug = 1  # will print out saved package.py
@@ -21,9 +21,11 @@ def requires():
 def bar():
     return "cheers"
 
+@include("util")
 def commands():
     env.PATH.append("{this.root}/bin")
     env.BAR = this.bar
+    util.do("stuff")
 
 dev_repo.add("foo",
              version="1",
@@ -46,9 +48,11 @@ def requires():
 
 variants = [['os-*']]
 
+@include('util')
 def commands():
     env.PATH.append("{this.root}/bin")
     env.BAR = this.bar
+    util.do("stuff")
 
 @late()
 def bar():
