@@ -1,7 +1,7 @@
 
 import os
 
-from rez.utils.sourcecode import _add_decorator, SourceCode, late
+from rez.utils.sourcecode import _add_decorator, SourceCode, late, include
 from rez.package_serialise import dump_package_data
 from rez.serialise import process_python_objects
 from rez.serialise import FileFormat
@@ -13,6 +13,7 @@ __all__ = [
     "DeveloperRepository",
     "early",
     "late",
+    "include",
     "building",
 ]
 
@@ -36,9 +37,11 @@ class DeveloperRepository(object):
             ... def bar():
             ...     return "cheers"
             ...
-            >>> def commands():
+            >>> @include("util")
+            ... def commands():
             ...     env.PATH.append("{this.root}/bin")
             ...     env.BAR = this.bar
+            ...     util.do("stuff")
             ...
             >>> dev_repo.add("foo",
             ...              version="1",
@@ -59,9 +62,11 @@ class DeveloperRepository(object):
             <BLANKLINE>
             variants = [['os-*']]
             <BLANKLINE>
+            @include('util')
             def commands():
                 env.PATH.append("{this.root}/bin")
                 env.BAR = this.bar
+                util.do("stuff")
             <BLANKLINE>
             @late()
             def bar():
