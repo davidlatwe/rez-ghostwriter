@@ -38,6 +38,10 @@ class DeveloperRepository(object):
             ... def requires():
             ...     return [] if building else ["!bar"]
             ...
+            >>> @early()
+            ... def variants():
+            ...     return [["fun", "os-*"]]
+            ...
             >>> @late()
             ... def bar():
             ...     return "cheers"
@@ -51,7 +55,7 @@ class DeveloperRepository(object):
             >>> dev_repo.add("foo",
             ...              version="1",
             ...              requires=requires,
-            ...              variants=[["os-*"]],
+            ...              variants=variants,
             ...              bar=bar,
             ...              build_command=False,
             ...              commands=commands)
@@ -65,7 +69,9 @@ class DeveloperRepository(object):
             def requires():
                 return [] if building else ["!bar"]
             <BLANKLINE>
-            variants = [['os-*']]
+            @early()
+            def variants():
+                return [["fun", "os-*"]]
             <BLANKLINE>
             @include('util')
             def commands():
