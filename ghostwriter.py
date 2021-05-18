@@ -1,6 +1,6 @@
 
 import os
-
+from copy import deepcopy
 from rez.utils.sourcecode import _add_decorator, SourceCode, late, include
 from rez.serialise import process_python_objects, FileFormat
 from rez.vendor.schema.schema import Schema, Optional, Or
@@ -12,7 +12,7 @@ from rez.package_serialise import (
 )
 
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 __all__ = [
     "DeveloperRepository",
@@ -112,14 +112,14 @@ class DeveloperRepository(object):
         :param kwargs: arbitrary package attributes
         :return:
         """
-        data = kwargs
+        data = deepcopy(kwargs)
         data["name"] = name
 
         # process early/late bound functions
         #
-        for key, value in kwargs.items():
+        for key, value in data.items():
             if hasattr(value, "_early"):
-                kwargs[key] = SourceCode(func=value, eval_as_function=True)
+                data[key] = SourceCode(func=value, eval_as_function=True)
         process_python_objects(data)
 
         # write out
