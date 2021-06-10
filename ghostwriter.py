@@ -3,16 +3,15 @@ import os
 from copy import deepcopy
 from rez.utils.sourcecode import _add_decorator, SourceCode, late, include
 from rez.serialise import process_python_objects, FileFormat
-from rez.vendor.schema.schema import Schema, Optional, Or
+from rez.vendor.schema.schema import Schema, Or
 from rez.package_serialise import (
     package_serialise_schema,
-    package_request_schema,
     package_key_order,
     dump_functions,
 )
 
 
-__version__ = "0.3.2"
+__version__ = "0.4.0"
 
 __all__ = [
     "DeveloperRepository",
@@ -202,9 +201,9 @@ def early_bound(schema):
 
 
 _schema_dict = package_serialise_schema._schema.copy()
-_schema_dict[Optional("variants")] = early_bound([[package_request_schema]])
-
-developer_serialise_schema = Schema(_schema_dict)
+developer_serialise_schema = Schema(
+    {key: early_bound(value) for key, value in _schema_dict.items()}
+)
 
 
 # MIT License
